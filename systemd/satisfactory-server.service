@@ -1,0 +1,29 @@
+[Unit]
+Description=Satisfactory Dedicated Server
+After=network-online.target
+Requires=network-online.target
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+ExecStartPre=/usr/games/steamcmd +force_install_dir /home/sparxy/SatisfactoryDedicatedServer +login anonymous +app_update 1690800 validate +quit
+ExecStart=/home/sparxy/SatisfactoryDedicatedServer/FactoryServer.sh -multihome=:: -Port=7777 -log -unattended
+ExecStartPost=/home/sparxy/SatisfactoryStartPost.sh
+ExecStop=/home/sparxy/SatisfactoryStopPre.sh
+ExecStop=kill -SIGTERM $MAINPID
+ExecStop=tail --pid $MAINPID -f /dev/null
+ExecStopPost=/home/sparxy/SatisfactoryStopPost.sh
+WorkingDirectory=/home/sparxy/SatisfactoryDedicatedServer
+User=sparxy
+Group=sparxy
+Restart=always
+RestartSec=30s
+TimeoutStopSec=300
+Sockets=satisfactory-server.socket
+StandardOutput=journal
+StandardError=journal
+StandardInput=socket
+TimeoutSec=600
+
+[Install]
+WantedBy=multi-user.target

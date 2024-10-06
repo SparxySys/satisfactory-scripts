@@ -1,0 +1,12 @@
+[Unit]
+Description=Satisfactory Dedicated Server Update Check Timer
+After=network-online.target
+Requires=network-online.target
+
+[Timer]
+OnBootSec=300
+OnUnitActiveSec=300
+Unit=satisfactory-update-check.service
+
+[Install]
+WantedBy=multi-user.target

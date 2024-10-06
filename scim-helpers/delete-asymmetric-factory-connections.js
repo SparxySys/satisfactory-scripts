@@ -1,0 +1,7 @@
+let connections = Object.keys(window.SCIM.baseLayout.saveGameParser.objects).map(item => window.SCIM.baseLayout.saveGameParser.objects[item]).filter(item => item.className && item.className.includes('FGFactoryConnectionComponent')).filter(item => item.pathName && item.properties && item.properties.filter(prop => prop && prop.name && prop.name === 'mConnectedComponent').length > 0).map(item => ({ part1: item.pathName, part2: item.properties.filter(prop => prop.name === 'mConnectedComponent').map(prop => prop.value.pathName)[0] }));
+let corruptedConnections = connections.filter(item => connections.findIndex(test => test.part1 === item.part1 && test.part2 === item.part2) < 0 || connections.findIndex(test => test.part1 === item.part2 && test.part2 === item.part1) < 0);
+let pathNames = [...corruptedConnections.map(item => item.part1), ...corruptedConnections.map(item => item.part2)];
+let unqPathNames = [...new Set(pathNames)].filter(item => item.includes('Conveyor'));
+let outerPathNames = unqPathNames.map(item => window.SCIM.baseLayout.saveGameParser.objects[item]).filter(item => item.className.includes('FGFactoryConnectionComponent') && item.outerPathName).map(item => item.outerPathName);
+let unqOuterPathNames = [...new Set(outerPathNames)];
+unqOuterPathNames.forEach(item => { console.log('Deleting ' + item); const marker = { baseLayout: window.SCIM.baseLayout, relatedTarget: { options: { pathName: item } } }; window.SCIM.baseLayout.deleteGenericBuilding(marker, true, false); });

@@ -1,0 +1,10 @@
+[Unit]
+Description=Satisfactory Dedicated Server Update Check Task
+After=network-online.target
+Requires=network-online.target
+
+[Service]
+ExecStart=/home/sparxy/SatisfactoryServerUpdateCheck.sh
+User=root
+Group=root
+WorkingDirectory=/home/sparxy/SatisfactoryDedicatedServer
