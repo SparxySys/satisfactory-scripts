@@ -1,0 +1,16 @@
+set title 'Satisfactory Tickrate'
+set yrange [0:60]
+set ylabel 'Tickrate'
+set xdata time
+set timefmt "%H:%M:%S"
+set format x "%H:%M:%S"
+
+system "curl -s -XGET https://example.org/tickrate.txt > tickrate.dat"
+
+plot "tickrate.dat" using 1:2 with lines axes x1y1 title "Tickrate (Ticks per second)"
+
+while (1) {
+	pause 1
+	system "curl -s -XGET https://example.org/tickrate.txt > tickrate.dat"
+	replot
+}
